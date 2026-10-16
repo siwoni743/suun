@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>트위터 비계 가입 페이지</title>
+    <style>
+        :root {
+            --primary: #f59e0b; /* 고급스러운 골드 포인트 */
+            --primary-hover: #d97706;
+            --bg-dark: #09090b;
+            --card-bg: rgba(20, 20, 22, 0.9);
+            --border-color: rgba(245, 158, 11, 0.25);
+            --accent-gold: #fbbf24;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(rgba(9, 9, 11, 0.88), rgba(9, 9, 11, 0.95)), 
+                        url('https://ibb.co/3PbdJcs') no-repeat center center fixed;
+            background-size: cover;
+            color: #f4f4f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding-bottom: 40px;
+        }
+
+        /* 1. 실시간 신청 현황 알림 바 */
+        .ticker-wrap {
+            width: 100%;
+            background: linear-gradient(90deg, #b45309, #f59e0b, #b45309);
+            color: #ffffff;
+            padding: 10px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 0.85rem;
+            font-weight: 700;
+            box-shadow: 0 2px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .ticker {
+            display: inline-block;
+            animation: ticker 25s linear infinite;
+        }
+
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-50%, 0, 0); }
+        }
+
+        .ticker-item {
+            display: inline-block;
+            padding: 0 20px;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 480px;
+            margin-top: 24px;
+        }
+
+        /* 2. 상단 프로필 카드 */
+        .profile-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+        }
+
+        .profile-img-wrap {
+            position: relative;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 14px auto;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary);
+            padding: 2px;
+            background: linear-gradient(45deg, #b45309, #f59e0b, #fef08a);
+        }
+
+        .badge-live {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: #10b981;
+            color: white;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 10px;
+            border: 2px solid #18181b;
+        }
+
+        .profile-title {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .profile-sub {
+            font-size: 0.9rem;
+            color: var(--accent-gold);
+            font-weight: 500;
+        }
+
+        /* 공지 박스 */
+        .notice-box {
+            background: rgba(24, 24, 27, 0.9);
+            backdrop-filter: blur(8px);
+            border-left: 4px solid var(--primary);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 20px;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            color: #d4d4d8;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--primary);
+        }
+
+        .notice-box ul {
+            list-style: none;
+            margin-top: 6px;
+        }
+
+        .notice-box li {
+            position: relative;
+            padding-left: 14px;
+            margin-bottom: 4px;
+        }
+
+        .notice-box li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+        }
+
+        /* 계좌 정보 카드 */
+        .account-card {
+            background: rgba(24, 24, 27, 0.95);
+            backdrop-filter: blur(8px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .account-info {
+            font-size: 0.9rem;
+        }
+
+        .account-info div:first-child {
+            color: var(--accent-gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        /* 계좌번호 텍스트 흰색 설정 */
+        .account-info div:last-child {
+            font-weight: 700;
+            color: #ffffff !important;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000000;
+            border: none;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-copy:hover {
+            opacity: 0.9;
+        }
+
+        /* 폼 스타일 */
+        .form-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #f3f4f6;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 14px;
+            background-color: rgba(15, 15, 18, 0.9);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(245, 158, 11, 0.4);
+        }
+
+        .price-display {
+            background: rgba(15, 15, 18, 0.9);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .price-display span {
+            font-size: 0.88rem;
+            color: #a1a1aa;
+        }
+
+        .price-display strong {
+            font-size: 1.3rem;
+            color: var(--accent-gold);
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #000000;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.05rem;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+            transition: transform 0.1s, opacity 0.2s;
+        }
+
+        .btn-submit:active {
+            transform: scale(0.98);
+        }
+
+        /* 3. 한 줄 후기 섹션 */
+        .reviews-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .reviews-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #ffffff;
+        }
+
+        .review-card {
+            background: rgba(15, 15, 18, 0.8);
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            font-size: 0.83rem;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .review-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            color: #a1a1aa;
+            margin-bottom: 4px;
+            font-size: 0.78rem;
+        }
+
+        .review-stars {
+            color: var(--accent-gold);
+        }
+
+        .review-text {
+            color: #e4e4e7;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 실시간 신청 현황 알림 바 -->
+<div class="ticker-wrap">
+    <div class="ticker">
+        <div class="ticker-item">🔥 [방금전] twitter_s***님 3개월 구독 신청 완료</div>
+        <div class="ticker-item">✨ [2분 전] user_k***님 6개월 VIP 신청 완료</div>
+        <div class="ticker-item">🎉 [5분 전] mini_0***님 1개월 구독 시작</div>
+        <div class="ticker-item">🔥 [방금전] twitter_s***님 3개월 구독 신청 완료</div>
+        <div class="ticker-item">✨ [2분 전] user_k***님 6개월 VIP 신청 완료</div>
+        <div class="ticker-item">🎉 [5분 전] mini_0***님 1개월 구독 시작</div>
+    </div>
+</div>
+
+<div class="container">
+
+    <!-- 프로필 카드 -->
+    <div class="profile-card">
+        <div class="profile-img-wrap">
+            <img src="https://ibb.co/3PbdJcs" alt="프로필" class="profile-img">
+            <span class="badge-live">LIVE</span>
+        </div>
+        <div class="profile-title">트위터 비계 가입 페이지</div>
+        <div class="profile-sub">수위 춤 , 사진들 모음 계정 !</div>
+    </div>
+
+    <!-- 안내 사항 -->
+    <div class="notice-box">
+        <p style="font-weight: 700; color: #ffffff;">📌 입금 및 신청 안내</p>
+        <ul>
+            <li>아래 계좌로 입금 후 신청서를 제출하시면 확인 즉시 승인됩니다.</li>
+            <li>트위터(X) 아이디 및 닉네임을 정확하게 작성해 주세요.</li>
+            <li>결제 후 교환 및 환불이 불가능하니 확인 후 진행 부탁드립니다.</li>
+        </ul>
+    </div>
+
+    <!-- 계좌 복사 영역 -->
+    <div class="account-card">
+        <div class="account-info">
+            <div>입금 계좌 (신한은행)</div>
+            <div>110-587-641213 (예금주: 이시원)</div>
+        </div>
+        <button class="btn-copy" onclick="copyAccount()">복사하기</button>
+    </div>
+
+    <!-- 신청 폼 -->
+    <div class="form-card">
+        <form id="subForm">
+            <div class="form-group">
+                <label for="twitterId">트위터(X) 아이디</label>
+                <input type="text" id="twitterId" placeholder="@아이디를 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="twitterNick">트위터(X) 닉네임</label>
+                <input type="text" id="twitterNick" placeholder="트위터 닉네임을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="depositor">입금자명</label>
+                <input type="text" id="depositor" placeholder="실제 입금하신 성함을 입력하세요" required>
+            </div>
+
+            <div class="form-group">
+                <label for="period">구독 기간 선택</label>
+                <select id="period" onchange="updatePrice()">
+                    <option value="1개월" data-price="23,000">1개월 (30일) - 23,000원</option>
+                    <option value="3개월" data-price="53,000" selected>3개월 (90일) ⭐️ BEST 추천 - 53,000원</option>
+                    <option value="6개월" data-price="99,000">6개월 (180일) VIP - 99,000원</option>
+                </select>
+            </div>
+
+            <div class="price-display">
+                <span>최종 입금 금액</span>
+                <strong id="priceText">53,000원</strong>
+            </div>
+
+            <button type="submit" class="btn-submit">입금 완료 및 카카오톡 확인 받기</button>
+        </form>
+    </div>
+
+    <!-- 한 줄 후기 -->
+    <div class="reviews-section">
+        <div class="reviews-title">
+            <span>⭐️ 실시간 이용자 후기</span>
+            <span style="font-size: 0.8rem; color: #a1a1aa; font-weight: 400;">(4.9/5.0)</span>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <span>s2_m***님</span>
+                <span class="review-stars">★★★★★</span>
+            </div>
+            <div class="review-text">신청하고 얼마 안 돼서 바로 비계 승인받았음 업로드 꾸준히 해주시고 수위 좋슴니다 ~🥵</div>
+        </div>
+
+        <div class="review-card">
+            <div class="review-header">
+                <span>user_9***님</span>
+                <span class="review-stars">★★★★★</span>
+            </div>
+            <div class="review-text">3개월로 신청했는데 가성비 좋네요. 사진이랑 영상 퀄리티 최고입니다!</div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // 카카오톡 오픈채팅 / 오픈프로필 링크
+    const KAKAO_CHAT_URL = "https://open.kakao.com/o/s9aBiBSi"; 
+
+    function updatePrice() {
+        const select = document.getElementById('period');
+        const selectedOption = select.options[select.selectedIndex];
+        const price = selectedOption.getAttribute('data-price');
+        document.getElementById('priceText').innerText = price + '원';
+    }
+
+    function copyAccount() {
+        const accountText = "110-587-641213";
+        navigator.clipboard.writeText(accountText).then(() => {
+            alert('계좌번호(110-587-641213)가 복사되었습니다!');
+        }).catch(() => {
+            alert('계좌번호: 110-587-641213 (신한은행)');
+        });
+    }
+
+    document.getElementById('subForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const twitterId = document.getElementById('twitterId').value;
+        const twitterNick = document.getElementById('twitterNick').value;
+        const depositor = document.getElementById('depositor').value;
+        const period = document.getElementById('period').value;
+        const price = document.getElementById('priceText').innerText;
+
+        // 양식 생성
+        const formText = `[트위터 비계 가입 신청서]\n• 트위터 아이디: ${twitterId}\n• 트위터 닉네임: ${twitterNick}\n• 입금자명: ${depositor}\n• 신청 기간: ${period} (${price})`;
+
+        // 클립보드에 자동 복사 후 카카오톡으로 이동
+        navigator.clipboard.writeText(formText).then(() => {
+            alert('신청서 양식이 자동으로 복사되었습니다!\n카카오톡 오픈채팅창에 [붙여넣기] 해주세요.');
+            window.location.href = KAKAO_CHAT_URL;
+        }).catch(() => {
+            // 복사 실패 시 수동 복사 안내 fallback
+            alert('신청서 양식을 복사하는데 실패했습니다. 카카오톡 이동 후 정보를 입력해주세요.');
+            window.location.href = KAKAO_CHAT_URL;
+        });
+    });
+
+    updatePrice();
+</script>
+
+</body>
+</html>
